@@ -29,7 +29,7 @@ const start = async () => {
 					chatId,
 					'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp'
 				);
-				await bot.sendMessage(chatId, `Приветствую тебя, путник!`);
+				return bot.sendMessage(chatId, `Приветствую тебя, путник!`);
 			}
 			return bot.sendMessage(chatId, 'Эта команда не поддерживается ботом');
 		});
