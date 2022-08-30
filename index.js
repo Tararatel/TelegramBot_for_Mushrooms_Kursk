@@ -1,6 +1,5 @@
 const TelegramApi = require('node-telegram-bot-api');
 const sequelize = require('./db');
-const UserModel = require('./models');
 
 const { Sequelize } = require('sequelize');
 
