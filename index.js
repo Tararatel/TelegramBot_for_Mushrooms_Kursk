@@ -1,6 +1,6 @@
 const TelegramApi = require('node-telegram-bot-api');
 const { Sequelize } = require('sequelize');
-const { DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
+const { DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD, DATABASE_URL } = process.env;
 
 // export const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
 // 	host: DB_HOST,
@@ -8,7 +8,7 @@ const { DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 // 	logging: false,
 // });
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(DATABASE_URL, {
 	dialectOptions: {
 		ssl: {
 			require: true,
