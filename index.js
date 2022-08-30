@@ -1,6 +1,4 @@
 const TelegramApi = require('node-telegram-bot-api');
-const sequelize = require('./db');
-
 const { Sequelize } = require('sequelize');
 const { DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
@@ -35,7 +33,6 @@ const start = async () => {
 			const chatId = msg.chat.id;
 
 			if (text === '/start') {
-				await UserModel.create({ chatId });
 				await bot.sendSticker(
 					chatId,
 					'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp'
