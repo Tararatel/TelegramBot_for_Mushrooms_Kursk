@@ -1,15 +1,7 @@
+require('dotenv').load();
 const TelegramApi = require('node-telegram-bot-api');
-// const sequelize = require('./db');
-// const UserModel = require('./models');
-
-/*
-
-Чтобы заработали переменные нужно:
-
-1. Установить пакет npm install dotenv --save
-2. Импортировать зависимость require(‘dotenv’).load();
-
-*/
+const sequelize = require('./db');
+const UserModel = require('./models');
 
 const token = '5371501689:AAH814sNx68iyVyjROFSiDZM6WalKoRBzck';
 const idAdmin = 269696052;
@@ -19,14 +11,14 @@ const bot = new TelegramApi(token, {
 });
 
 const start = async () => {
-	// try {
-	// 	await sequelize.authenticate().then(() => {
-	// 		console.log('Postgres connection has been established successfully.');
-	// 	});
-	// 	await sequelize.sync();
-	// } catch (e) {
-	// 	console.log('Подключение к БД не удалось', e);
-	// }
+	try {
+		await sequelize.authenticate().then(() => {
+			console.log('Подключение к БД прошло успешно.');
+		});
+		await sequelize.sync();
+	} catch (e) {
+		console.log('Подключение к БД не удалось', e);
+	}
 
 	bot.setMyCommands([
 		{
@@ -42,12 +34,10 @@ const start = async () => {
 	bot.on('message', async (msg) => {
 		const text = msg.text;
 		const chatId = msg.chat.id;
+		const location = msg.location;
 
 		try {
 			if (text == '/start') {
-				// await UserModel.create({
-				// 	chatId,
-				// });
 				await bot.sendSticker(
 					chatId,
 					'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp'
@@ -78,9 +68,14 @@ const start = async () => {
 					);
 				});
 
-				bot.on('location', (msg) => {
+				bot.on('location', async (msg) => {
 					console.log(msg.location);
 					//do something with the lat long
+
+					await UserModel.create({
+						chatId,
+						location,
+					});
 				});
 			}
 			// if (text) {
