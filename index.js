@@ -1,16 +1,6 @@
 const TelegramApi = require('node-telegram-bot-api');
-const { Sequelize } = require('sequelize');
+const sequelize = require('./db');
 const UserModel = require('./models');
-const { DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD, DATABASE_URL } = process.env;
-
-const sequelize = new Sequelize(DATABASE_URL, {
-	dialectOptions: {
-		ssl: {
-			require: true,
-			rejectUnauthorized: false,
-		},
-	},
-});
 
 const token = '5371501689:AAH814sNx68iyVyjROFSiDZM6WalKoRBzck';
 
