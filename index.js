@@ -14,34 +14,41 @@ const sequelize = new Sequelize(DATABASE_URL, {
 
 const token = '5371501689:AAH814sNx68iyVyjROFSiDZM6WalKoRBzck';
 
-const bot = new TelegramApi(token, { polling: true });
+const bot = new TelegramApi(token, {
+	polling: true,
+});
 
-const start = async () => {
+const start = () => {
 	try {
 		sequelize.authenticate().then(() => {
 			console.log('Postgres connection has been established successfully.');
 		});
-		await sequelize.sync();
+		sequelize.sync();
 	} catch (e) {
 		console.log('Подключение к БД не удалось', e);
 	}
 
 	bot.setMyCommands([
-		{ command: '/start', description: 'Запустить бота' },
-		{ command: '/send', description: 'Отправить координаты' },
+		{
+			command: '/start',
+			description: 'Запустить бота',
+		},
+		{
+			command: '/send',
+			description: 'Отправить координаты',
+		},
 	]);
 
 	try {
-		bot.on('message', async (msg) => {
+		bot.on('message', (msg) => {
 			const text = msg.text;
 			const chatId = msg.chat.id;
 
 			if (text == '/start') {
-				await UserModel.create({ chatId });
-				await bot.sendSticker(
+				UserModel.create({
 					chatId,
-					'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp'
-				);
+				});
+				bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp');
 				return bot.sendMessage(chatId, `Приветствую тебя, путник!`);
 			}
 			return bot.sendMessage(chatId, 'Эта команда не поддерживается ботом');
