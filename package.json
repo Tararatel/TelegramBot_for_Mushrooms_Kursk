@@ -5,8 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon index.js",
-		"start": "node index.js",
-		"heroku-postbuild": "npm install pm2"
+		"start": "node index.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -17,7 +16,6 @@
 		"nodemon": "^2.0.19",
 		"pg": "^8.8.0",
 		"pg-hstore": "^2.3.4",
-		"pm2": "^5.2.0",
 		"sequelize": "^6.21.4"
 	}
 }

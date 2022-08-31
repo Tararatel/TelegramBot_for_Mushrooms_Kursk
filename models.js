@@ -1,10 +1,17 @@
 const sequelize = require('./db');
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define('user', {
-	id: { type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true },
-	chatId: { type: DataTypes.STRING, unique: true },
-	location: { type: DataTypes.STRING, unique: true },
-});
+const DataBase = sequelize.define(
+	'DataBase',
+	{
+		chatId: DataTypes.BIGINT,
+		latitude: DataTypes.STRING,
+		longitude: DataTypes.STRING,
+	},
+	{
+		tableName: 'Coordinates',
+		timestamps: false,
+	}
+);
 
-module.exports = User;
+module.exports = DataBase;

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const TelegramApi = require('node-telegram-bot-api');
 const sequelize = require('./db');
-const UserModel = require('./models');
+const DataBase = require('./models');
 
 const token = '5371501689:AAH814sNx68iyVyjROFSiDZM6WalKoRBzck';
 const idAdmin = 269696052;
@@ -15,7 +15,6 @@ const start = async () => {
 		await sequelize.authenticate().then(() => {
 			console.log('Подключение к БД прошло успешно.');
 		});
-		await sequelize.sync();
 	} catch (e) {
 		console.log('Подключение к БД не удалось', e);
 	}
@@ -34,7 +33,6 @@ const start = async () => {
 	bot.on('message', async (msg) => {
 		const text = msg.text;
 		const chatId = msg.chat.id;
-		const location = msg.location;
 
 		try {
 			if (text == '/start') {
@@ -69,14 +67,12 @@ const start = async () => {
 				});
 
 				bot.on('location', async (msg) => {
-					console.log(msg.location);
+					const latitude = msg.location.latitude.toString();
+					const longitude = msg.location.longitude.toString();
 
 					// Тут надо что-то сделать с полученными координатами
 
-					await UserModel.create({
-						chatId,
-						location,
-					});
+					const Data = await DataBase.create({ chatId, latitude, longitude });
 				});
 			}
 		} catch (e) {
