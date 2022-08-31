@@ -8,12 +8,12 @@ const bot = new TelegramApi(token, {
 	polling: true,
 });
 
-const start = () => {
+const start = async () => {
 	try {
-		sequelize.authenticate().then(() => {
+		await sequelize.authenticate().then(() => {
 			console.log('Postgres connection has been established successfully.');
 		});
-		sequelize.sync();
+		await sequelize.sync();
 	} catch (e) {
 		console.log('Подключение к БД не удалось', e);
 	}
@@ -29,23 +29,25 @@ const start = () => {
 		},
 	]);
 
-	try {
-		bot.on('message', (msg) => {
-			const text = msg.text;
-			const chatId = msg.chat.id;
+	bot.on('message', async (msg) => {
+		const text = msg.text;
+		const chatId = msg.chat.id;
 
+		try {
 			if (text == '/start') {
-				UserModel.create({
+				await UserModel.create({
 					chatId,
 				});
-				bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp');
+				await bot.sendSticker(
+					chatId,
+					'https://tlgrm.ru/_/stickers/81a/4f6/81a4f635-870c-370c-830d-02004b54e0a8/6.webp'
+				);
 				return bot.sendMessage(chatId, `Приветствую тебя, путник!`);
 			}
 			return bot.sendMessage(chatId, 'Эта команда не поддерживается ботом');
-		});
-	} catch (e) {
-		console.log('Какая-то ошибка', e);
-	}
+		} catch (e) {
+			console.log('Какая-то ошибка', e);
+		}
+	});
 };
-
 start();
