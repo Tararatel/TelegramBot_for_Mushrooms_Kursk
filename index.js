@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config();
 const TelegramApi = require('node-telegram-bot-api');
 const sequelize = require('./db');
 const UserModel = require('./models');
@@ -70,7 +70,8 @@ const start = async () => {
 
 				bot.on('location', async (msg) => {
 					console.log(msg.location);
-					//do something with the lat long
+
+					// Тут надо что-то сделать с полученными координатами
 
 					await UserModel.create({
 						chatId,
@@ -78,10 +79,6 @@ const start = async () => {
 					});
 				});
 			}
-			// if (text) {
-			// 	bot.forwardMessage(chatId, idAdmin, msg.message_id);
-			// }
-			// return bot.sendMessage(chatId, 'Эта команда не поддерживается ботом');
 		} catch (e) {
 			console.log('Какая-то ошибка', e);
 		}

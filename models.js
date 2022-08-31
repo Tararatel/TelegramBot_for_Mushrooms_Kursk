@@ -6,3 +6,5 @@ const User = sequelize.define('user', {
 	chatId: { type: DataTypes.STRING, unique: true },
 	location: { type: DataTypes.STRING, unique: true },
 });
+
+module.exports = User;
